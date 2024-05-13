@@ -1,3 +1,9 @@
 <?php
 
-echo 'Here should be some information about my first homework';
+require_once __DIR__ . '/scripts/function.php';
+
+if ($_GET['info']) {
+    phpinfo();
+
+    exit;
+}
