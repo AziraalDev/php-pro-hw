@@ -2,8 +2,6 @@
 
 require_once __DIR__ . '/scripts/function.php';
 
-if ($_GET['info']) {
+if (isset($_GET['info']) && $_GET['info']) {
     phpinfo();
-
-    exit;
 }
