@@ -1,3 +1,7 @@
 <?php
 
-echo 'Here should be some information about my first homework';
+require_once __DIR__ . '/scripts/function.php';
+
+if (isset($_GET['info']) && $_GET['info']) {
+    phpinfo();
+}

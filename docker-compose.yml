@@ -1,0 +1,40 @@
+#version: "3.8"
+
+# binding services
+networks:
+  php_pro:
+    driver: bridge
+
+volumes:
+  mysql_data:
+    driver: local
+
+services:
+  php_apache:
+    image: "php:8.3-apache"
+    restart: always
+    ports:
+      - "8081:80"       # def HTTP : 80 -> localhost, HTTPS: 443
+    volumes:
+      - .:/var/www/html # '.' - to scan full project
+    networks:
+      - php_pro
+  mysql:
+    image: "mysql:8"
+    restart: always
+    #ports:
+    #  - "33061:3306"     # used to connect with DB externally
+    volumes:
+      - "mysql_data:/var/lib/mysql"  #
+    environment:
+      MYSQL_ROOT_PASSWORD: invincible
+      MYSQL_DATABASE: home_work
+    networks:
+      - php_pro
+  adminer:
+    image: "adminer"
+    restart: always
+    ports:
+      - "8080:8080"
+    networks:
+      - php_pro
