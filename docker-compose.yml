@@ -11,7 +11,9 @@ volumes:
 
 services:
   php_apache:
-    image: "php:8.3-apache"
+    #image: "php:8.3-apache"
+    build:
+      context: .docker/php
     restart: always
     ports:
       - "8081:80"       # def HTTP : 80 -> localhost, HTTPS: 443
