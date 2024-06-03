@@ -1,13 +1,23 @@
 <?php
 
+use Overload\EconomTaxiService;
+use Overload\LuxuryTaxiService;
+use Overload\StandardTaxiService;
+use Overload\TaxiService;
+
 require_once __DIR__ . "/vendor/autoload.php";
 
-use Overload\open_closed\Logger as Logger;
-use Overload\open_closed\SimpleFormatter as SimpleFormatter;
-use Overload\open_closed\SmsDelivery as SmsDelivery;
+function initiateTaxiService(TaxiService $taxiService): void
+{
+    $taxiService->getCarDetails();
+}
+echo '<pre style="font-size: 20px">';
+echo "\nEconom taxi service\n";
+initiateTaxiService(new EconomTaxiService());
 
-# Open Closed principle realization
-$formatter = new SimpleFormatter();
-$delivery = new SmsDelivery();
-$logger = new Logger($formatter, $delivery);
-$logger->log('Emergency error! Please fix me!');
+echo "\nStandard taxi service\n";
+initiateTaxiService(new StandardTaxiService());
+
+echo "\nLuxury taxi service\n";
+initiateTaxiService(new LuxuryTaxiService());
+echo '</pre>';
