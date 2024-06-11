@@ -3,8 +3,15 @@
     "type": "project",
     "autoload": {
         "psr-4": {
-            "Overload\\": "classes/"
-        }
+            "App\\": "App/",
+            "Core\\": "core/"
+        },
+        "files": [
+            "core/helpers.php",
+            "routes/api.php"
+        ]
     },
-    "require": {}
+    "require": {
+        "larapack/dd": "^1.1"
+    }
 }
