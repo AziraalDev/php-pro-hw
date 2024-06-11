@@ -1,7 +1,12 @@
 <?php
 
 use App\Enums\HttpStatus as Status;
+use Core\DB;
 
+function db(): PDO
+{
+    return DB::connect();
+}
 function jsonResponse(Status $httpStatus, $data = []) : string
 {
     header_remove();
