@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\HttpStatus as HttpStatus;
+use App\Models\User;
 use Core\Router as Router;
 use Dotenv\Dotenv;
 
