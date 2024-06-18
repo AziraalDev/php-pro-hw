@@ -4,13 +4,20 @@ namespace App\Controllers\V1;
 
 use App\Controllers\BaseApiController;
 use App\Enums\HttpStatus;
+use App\Enums\SQL;
+use App\Models\Author;
 use Core\Controller;
 
 class AuthorController extends BaseApiController
 {
     public function index()
     {
-        return $this->response(HttpStatus::OK, ['method' => 'index']);
+        $author = Author::select(['id', 'biography'])
+            ->where('id', SQL::EQUAL, 2)
+            ->or('biography', SQL::EQUAL, 'Lodz, Poland')
+            ->get();
+
+        return $this->response(HttpStatus::OK, $author);
     }
 
     public function show(int $id)
