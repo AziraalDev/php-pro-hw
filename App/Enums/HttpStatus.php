@@ -13,8 +13,9 @@ enum HttpStatus: int {
     case BAD_GATEWAY = 502;
     case SERVICE_UNAVAILABLE = 503;
     case GATEWAY_TIMEOUT = 504;
+    case UNPROCESSABLE_ENTITY = 422;
 
-    public function description()
+    public function description(): array
     {
         $description = match($this) {
             self::OK => 'OK',
@@ -27,6 +28,7 @@ enum HttpStatus: int {
             self::BAD_GATEWAY => 'Bad Gateway',
             self::SERVICE_UNAVAILABLE => 'Service Unavailable',
             self::GATEWAY_TIMEOUT => 'Gateway Timeout',
+            self::UNPROCESSABLE_ENTITY => 'To be implemented', # was an error without it
         };
 
         return [
