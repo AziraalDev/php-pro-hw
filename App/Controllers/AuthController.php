@@ -37,6 +37,6 @@ class AuthController extends Controller
             }
         }
 
-        return $this->response(HttpStatus::UNPROCESSABLE_ENTITY, errors: RegisterValidator::getErrors());
+        return $this->response(HttpStatus::UNPROCESSABLE_ENTITY, errors: AuthValidator::getErrors());
     }
 }

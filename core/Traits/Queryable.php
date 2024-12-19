@@ -75,7 +75,13 @@ trait Queryable
         #Kind of Builder has to have resetQuery method
         static::$query = '';
     }
+    static protected function destroy(int $id) : bool
+    {
+        $query = db()->prepare('DELETE FROM ' . static::$tableName . ' WHERE id = :id');
+        $query->bindParam('id', $id);
 
+        return $query->execute();
+    }
     public function get(): array
     {
         # Connect to DB -> SQL request with $query -> Return results as a objects of CLASS
@@ -136,13 +142,61 @@ trait Queryable
     {
         $this->require(['where'], 'AND can not be used without');
         static::$query .= " AND";
+        $this->commands[] = 'and';
         return $this->where($column, $operator, $value);
     }
     public function or(string $column, SQL $operator = SQL::EQUAL, $value = null): static
     {
         $this->require(['where'], 'OR can not be used without');
         static::$query .= " OR";
+        $this->commands[] = 'or';
         return $this->where($column, $operator, $value);
+    }
+    public function orderBy(array $columns): static
+    {
+        $this->require(['select'], 'ORDER BY can not be used without');
+
+        $this->commands[] = 'order';
+
+        $lastKey = array_key_last($columns);
+
+        static::$query .= " ORDER BY ";
+
+        foreach ($columns as $column => $order) {
+            static::$query .= "$column $order" . ($column !== $lastKey ? ', ' : '');
+        }
+
+        return $this;
+    }
+
+    public function exists(): bool
+    {
+        $this->require(['select'], 'Method exists() can not be called without');
+
+        return !empty($this->get());
+    }
+
+    public function update(array $fields): static
+    {
+        $query = "UPDATE " . static::$tableName . " SET " . $this->updatePlaceholders(array_keys($fields)) . " WHERE id = :id";
+        $query = db()->prepare($query);
+
+        $fields['id'] = $this->id;
+        $query->execute($fields);
+
+        return static::find($this->id);
+    }
+
+    protected function updatePlaceholders(array $keys): string
+    {
+        $string = '';
+        $lastKey = array_key_last($keys);
+
+        foreach ($keys as $index => $key) {
+            $string .= "$key = :$key" . ($index !== $lastKey ? ', ' : '');
+        }
+
+        return $string;
     }
     protected function prevent(array $preventMethods, string $text = ''): void
     {
